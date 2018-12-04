@@ -5,7 +5,17 @@
 
 #include <queue>
 #include <functional>
+
+#include <algorithm>
 using namespace std;
+
+static const auto io_sync_off = []()
+{
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    return nullptr;
+}();
 
  struct ListNode {
      int val;
@@ -13,6 +23,7 @@ using namespace std;
      ListNode(int x) : val(x), next(NULL) {}
 };
 
+//Approach 1: Compare one by one
 //Runtime: 180 ms, faster than 17.40% of C++ online submissions
 //Time Complexity: O(m * n)
 //Space Complexity: O(m * n)
@@ -54,10 +65,99 @@ public:
 };
 */
 
+//Approach 2: Merge with Divide And Conquer
+//Runtime: 24 ms, faster than 56.93% of C++ online submissions
+//Time Complexity: O(Nlogk), n is the total number of nodes in two lists,  k is the list number
+//Space Complexity: O(1)
+/*
+class Solution {
+public:
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		int len = lists.size(); 
+		if(len == 0) return NULL;
+		if(len == 1) return lists[0];
+		
+		int interval = 1;
+		while(interval < len){
+			for(int i = 0; i <= len - interval; ){
+				if(i + interval <= len - 1)
+					lists[i] = merge2Lists(lists[i], lists[i + interval]);		
+				i += interval * 2;
+			}
+			interval *= 2;
+		}
+		return lists[0];
+	}
 
-//Approach 2: Priority Queue
+	ListNode* merge2Lists(ListNode* l1, ListNode* l2){
+		ListNode* result = new ListNode(0);
+		ListNode* ptr = result;
+
+		while(l1 || l2){
+			ListNode *newNode;
+			if(l1 == NULL){
+				ptr->next = l2;
+				break;
+			}
+			if(l2 == NULL){
+				ptr->next = l1;
+				break;
+			}
+
+			if(l1->val < l2->val){
+				newNode = new ListNode(l1->val);
+				l1 = l1->next;
+			}
+			else{
+				newNode = new ListNode(l2->val);
+				l2 = l2->next;
+			}
+
+			ptr->next = newNode;
+			ptr = ptr->next;
+		}
+
+		return result->next;
+	}
+};
+*/
+
+//Approach 3: vector + sort() 
+//Runtime: 32 ms, faster than 42.49% of C++ online submissions
+//Time complexity : O(n^2), N is total number in all lists
+//Space complexity: O(n)
+/*
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        vector<int> temp;
+        ListNode* curr;
+        for(int i = 0; i < lists.size(); i++){
+            curr = lists[i];
+            while(curr){
+                temp.push_back(curr->val);
+                curr = curr->next;
+            }
+        }
+        ListNode* head = NULL;
+        if(!temp.empty()){
+            sort(temp.begin(),temp.end());
+            head = new ListNode(temp[0]);
+        }
+        curr = head;
+        for(int i = 1; i < temp.size(); i++){
+            ListNode* t = new ListNode(temp[i]);
+            curr->next = t;
+            curr = t;
+        }
+        return head;
+    }
+};
+*/
+
+//Approach 4: Priority Queue, similar to approach 3
 //Runtime: 16 ms, faster than 99.72% of C++ online submissions
-//Time complexity : O(Nlogk)where k is the number of linked lists, N is total number
+//Time complexity : O(Nlogk), N is total number in all lists, k is the lists number
 //Space complexity: O(n)
 class Solution {
 public:
@@ -85,7 +185,6 @@ public:
 		return result->next;
 	}
 };
-
 
 int main(){
 	Solution sol;
