@@ -8,15 +8,9 @@ public:
     int removeElement(vector<int>& nums, int val) {
     	int count = 0;
     	for(int i = 0; i < nums.size(); ++i){
-        	if(nums[i] == val){
-        		count++;
-        	}
-        	else{
-        		nums[i - count] = nums[i];
-        		cout << nums[i] << " ";
-        	}
+        	if(nums[i] == val) count++;
+        	else nums[i - count] = nums[i];
         }
-        cout << endl;
         return nums.size() - count;
     }
 };
@@ -31,7 +25,22 @@ int removeElement(vector<int>& nums, int val) {
     sort(nums.begin(),nums.end());
     return nums.size()-count;
 }
+
+//Approach 3
+int removeElement(vector<int>& nums, int val) {
+    int i = 0;
+    int n = nums.length;
+    while (i < n) {
+        if (nums[i] == val) {
+            nums[i] = nums[n - 1];
+            n--;
+        } 
+        else i++;
+    }
+    return n;
+}
 */
+
 
 int main(){
 	int a[] = {0,1,2,2,3,0,4,2};
