@@ -50,9 +50,9 @@ public:
     			set<char> mySet;
     			for(int m = 0; m < num; ++m){
     				for(int n = 0; n < num; ++n){
-    					if(board[m + 3 * i][n + 3 * j] == '.') continue;
-    					if(mySet.count(board[m + 3 * i][n + 3 * j]) == 1) return false;
-    					mySet.insert(board[m + 3 * i][n + 3 * j]);
+    					if(board[m + num * i][n + num * j] == '.') continue;
+    					if(mySet.count(board[m + num * i][n + num * j]) == 1) return false;
+    					mySet.insert(board[m + num * i][n + num * j]);
     				}
     			}
     		}
