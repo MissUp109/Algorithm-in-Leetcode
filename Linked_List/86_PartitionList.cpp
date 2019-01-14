@@ -16,7 +16,8 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-/*
+
+// Approach 1: use pointer change
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
@@ -46,8 +47,9 @@ public:
         return head->next;
     }
 };
-*/
+
 /*
+// Approach 2: use extra space
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
@@ -73,33 +75,45 @@ public:
     }
 };*/
 
+
+/*
+//Approach 3: Recursion
 class Solution {
 public:
-    ListNode* partition(ListNode* head, int x) {
-        if(!head) return NULL;
+    ListNode* partition(ListNode* head, int x){
+        bool flag = true;
+        return recursion(head, x, flag);
+    }
 
-        ListNode *ret;
+    ListNode* recursion(ListNode* head, int x, bool flag) {
+        if(!head || !head->next) return head;
+
+        ListNode *ret = recursion(head->next, x, flag);
         if(head->val < x){
-            head->next = partition;
+            head->next = ret;
             return head;
-        }
-        else{
-            ret = partition(head->next, x);
+        }else{
+            ListNode *retHead = ret;
+            while(ret->next)
+                ret = ret->next;
             ret->next = head;
-            return ret;
+            if(flag){
+                head->next = NULL;
+                flag = !flag;
+            }
+            return retHead;
         }
-
     }
 };
-
+*/
 int main(){
     Solution sol;
-    ListNode *head = new ListNode(5);
-    ListNode *node1 = new ListNode(1);
-    ListNode *node2 = new ListNode(1);
+    ListNode *head = new ListNode(1);
+    ListNode *node1 = new ListNode(4);
+    ListNode *node2 = new ListNode(3);
     ListNode *node3 = new ListNode(2);
-    ListNode *node4 = new ListNode(2);
-    ListNode *node5 = new ListNode(1);
+    ListNode *node4 = new ListNode(5);
+    ListNode *node5 = new ListNode(2);
     head->next = node1;
     node1->next = node2;
     node2->next = node3;
@@ -107,8 +121,7 @@ int main(){
     node4->next = node5;
     node5->next = NULL;
 
-    ListNode *ret = sol.partition(head, 3);
-    
+    ListNode *ret = sol.partition(head, 0);
     while(ret){
         cout << ret->val << " -> ";
         ret = ret->next;

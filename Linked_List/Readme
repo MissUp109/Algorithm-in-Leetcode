@@ -1,0 +1,9 @@
+86 三种方法
+92 考虑递归的方法
+142 Two pointers: slow & fast
+
+linked list的方法
+* 递归、回溯
+* 两个指针、三个指针
+* 申请额外的节点空间
+* 直接替换value
