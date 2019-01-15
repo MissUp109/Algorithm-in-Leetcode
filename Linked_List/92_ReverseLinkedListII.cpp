@@ -59,22 +59,16 @@ public:
 
         recurseAndReverse(right, left, m - 1, n - 1, stop);
 
-        // In case both the pointers cross each other or become equal, we
-        // stop i.e. don't swap data any further. We are done reversing at this
-        // point.
         if (left == right || right->next == left) {
             stop = true;            
         }
 
-        // Until the boolean stop is false, swap data between the two pointers
         if (!stop) {
-        	cout << "left: " << left->val << ", right: " << right->val << endl;
+        	//cout << "left: " << left->val << ", right: " << right->val << endl;
             int t = left->val;
             left->val = right->val;
             right->val = t;
 
-            // Move left one step to the right.
-            // The right pointer moves one step back via backtracking.
             left = left->next;
         }
     }
