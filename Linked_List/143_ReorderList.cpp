@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-/* This file contains 1 approaches: backtracking.*/
+/* This file contains 2 approaches.*/
 
 static const auto io_sync_off = []()
 {
@@ -18,6 +18,8 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
+//Approach 1: backtracking
+/*
 class Solution {
 public:
     void reorderList(ListNode* head) {
@@ -45,6 +47,25 @@ public:
     		right->next = tmp;	
     		left = tmp;//update left	
     	}
+    }
+};
+*/
+
+//Approach 2: vector
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        vector<ListNode*> temp;
+        while(head) {
+            temp.push_back(head);
+            head = head->next;
+        }
+        int i = 0, j = temp.size()-1;
+        while(i <= j) {
+            temp[i]->next = temp[j];
+            temp[j]->next = i+1 <= j-1 ? temp[i+1] : nullptr;
+            ++i; --j;
+        }
     }
 };
 
