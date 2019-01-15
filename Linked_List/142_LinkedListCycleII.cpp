@@ -1,6 +1,8 @@
 #include <iostream>
 using namespace std;
 
+/* This file contains 2 approaches.*/
+
 static const auto io_sync_off = []()
 {
     std::ios::sync_with_stdio(false);
@@ -16,65 +18,65 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
+
+//Approach 1: with <set>
+#include <set>
+class Solution {
+public:
+    ListNode *detectCycle(ListNode* head) {	
+        set<ListNode*> nodeSet;
+        while(head){
+        	auto found = nodeSet.find(head);
+        	if(found != nodeSet.end())
+        		return *found;
+        	nodeSet.insert(head);
+            head = head->next;
+        }
+        return NULL;
+    }
+};
+
+
+//Approach 2: use slow/fast pointers
+//ref: [https://leetcode.com/problems/linked-list-cycle-ii/discuss/44781/Concise-O(n)-solution-by-using-C%2B%2B-with-Detailed-Alogrithm-Description]
 /*
-#include <unordered_map>
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {	
-        unordered_map<ListNode*, int> nodeMap;
+    	ListNode *slow = head;
+        ListNode *fast = head;
+        ListNode *entry = head;
 
-        int i = 0;
-        ListNode* ret = head;
-        while(head){
-        	auto found = nodeMap.find(head);
-        	if(found != nodeMap.end()){
-        		cout << "tail connects to node index " << found->second << endl;
-        		return ret;
-        	}
-        	nodeMap[head] = i++;
-        	head = head->next;
+        while(fast && fast->next){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast){
+                while(entry != slow){
+                    entry = entry->next;
+                    slow = slow->next;
+                }
+                return entry;
+            }
         }
-
-        cout << "no cycle" << endl;
-        return ret;
+        return NULL;
     }
 };
 */
 
-class Solution {
-public:
-    ListNode *detectCycle(ListNode *head) {	
-    	if(!head || !head->next || !head->next->next){
-    		cout << "no cycle" << endl;
-    		return head;
-    	}
-    	ListNode *slow = head->next, *fast = head->next->next;
-    	int idx = 1;
-    	while(slow->next && fast->next->next){
-    		if(slow == fast){
-    			cout << "tail connects to node index " << idx << endl;
-    			return head;
-    		}
-    		slow = slow->next;
-    		fast = fast->next->next;
-    		++idx;
-    	}
-
-    }
-};
-
 int main(){
     Solution sol;
-    ListNode *head = new ListNode(3);
+    ListNode *node0 = new ListNode(1);
     ListNode *node1 = new ListNode(2);
-    ListNode *node2 = new ListNode(0);
-    ListNode *node3 = new ListNode(-4);
-    //ListNode *node4 = new ListNode(5);
-    head->next = node1;
-    node1->next = node2;
+    ListNode *node2 = new ListNode(3);
+    ListNode *node3 = new ListNode(4);
+    ListNode *node4 = new ListNode(5);
+    node0->next = node1;
+    node1->next = node0;
     node2->next = node3;
     node3->next = node1;
-    //node4->next = node2;
+    node4->next = NULL;
 
-    sol.detectCycle(head);
+    if(sol.detectCycle(node0)) 
+        cout << sol.detectCycle(node0)->val << endl;
+    else cout << "NULL" << endl;
 }
