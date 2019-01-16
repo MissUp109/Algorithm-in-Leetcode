@@ -18,6 +18,7 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
+//Runtime: 16 ms, faster than 100.00% of C++ online submissions
 class Solution {
 public:
     ListNode* insertionSortList(ListNode* head) {
@@ -31,19 +32,24 @@ public:
 
         ListNode *tmp, *pivot;
         while(cur){
-        	tmp = cur->next;
-        	pivot = newHead;
-        	while(pivot->next != tail->next){
-        		if(cur->val <= pivot->next->val){
-        			tail->next = cur->next;
-        			cur->next = pivot->next;
-        			pivot->next = cur;
-        			break;
-        		}
-        		pivot = pivot->next;
-        	}
-        	if(pivot->next == tail->next) tail = cur;
-        	cur = tmp;
+            if(tail->val > cur->val){
+                tmp = cur->next;
+                pivot = newHead;
+                while(pivot->next && cur->val > pivot->next->val)
+                    pivot = pivot->next;
+
+                tail->next = cur->next;
+                cur->next = pivot->next;
+                pivot->next = cur;
+
+                cur = tmp; //cur = cur->next
+            }
+            else{
+                tail = cur;
+                cur = cur->next;
+            }
+        	
+
         }
         return newHead->next;
     }
@@ -51,10 +57,10 @@ public:
 
 int main(){
     Solution sol;
-    ListNode *node0 = new ListNode(1);
-    ListNode *node1 = new ListNode(2);
-    ListNode *node2 = new ListNode(1);
-    ListNode *node3 = new ListNode(2);
+    ListNode *node0 = new ListNode(-1);
+    ListNode *node1 = new ListNode(3);
+    ListNode *node2 = new ListNode(2);
+    ListNode *node3 = new ListNode(4);
     ListNode *node4 = new ListNode(0);
     node0->next = node1;
     node1->next = node2;
