@@ -4,6 +4,7 @@
 * 92  Backtracking
 * 142 **Two pointers: slow & fast**
 * 143 Backtracking; **vector**
+* 147 Insertion sort;
 
 ## Solutions
 * recursion-backtracking
