@@ -6,6 +6,12 @@
 * 143 Backtracking; **vector**
 * 147 Insertion sort;
 * **148**Backtracking; merge sort; slow & fast pointers;
+* 109 
+* 138 
+* 328 pointer change
+* 430 
+* 445 
+* 817
 
 ## Solutions
 * recursion-backtracking
